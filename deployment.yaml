@@ -1,3 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+      - name: java-app
+        image: saitejaswi23/java-app:latest
+        imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -8,6 +26,7 @@ spec:
   selector:
     app: java-app
   ports:
-    - port: 8086       # Access inside the cluster at java-service:8086
-      targetPort: 8080 # The port the app is (supposed to be) listening on
-      nodePort: 30002  # External access via <Node-IP>:30002
+    - port: 80
+      targetPort: 8086 # Note: This won't connect unless you use the Web Server code
+      nodePort: 30001
+
